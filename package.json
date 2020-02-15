@@ -1,0 +1,87 @@
+{
+  "name": "nodejs-api-starter-kit",
+  "description": "Getting started with nodejs, express, sequelize, ini, es@next, prettier, eslint, jest, nodemon",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nopantsmonkey/nodejs-starter-kit.git"
+  },
+  "author": "nopantsmonkey <aamir.shah.92@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf dist",
+    "copy": "ncp ./config/config.ini ./dist/config/config.ini",
+    "transpile": "babel . --out-dir dist/ --ignore .idea,node_modules,deploy,dist",
+    "serve": "node ./dist/lib",
+    "build": "npm-run-all transpile copy",
+    "compile": "npm-run-all clean build serve",
+    "dev": "NODE_ENV=development DEBUG=express npm run compile",
+    "prod": "NODE_ENV=production DEBUG=express npm run compile",
+    "test": "jest",
+    "watch": "nodemon"
+  },
+  "engines": {
+    "node": ">=12.16.0"
+  },
+  "dependencies": {
+    "@types/ini": "1.3.30",
+    "async": "3.1.1",
+    "chalk": "3.0.0",
+    "cookie-parser": "1.4.4",
+    "core-js": "3.6.4",
+    "cors": "2.8.5",
+    "debug": "4.1.1",
+    "ejs": "3.0.1",
+    "express": "4.17.1",
+    "ini": "1.3.5",
+    "lodash": "4.17.15",
+    "morgan": "1.9.1",
+    "pg": "7.18.1",
+    "pg-hstore": "2.3.3",
+    "sequelize": "5.21.4",
+    "statuses": "1.5.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.8.4",
+    "@babel/core": "7.8.4",
+    "@babel/node": "7.8.4",
+    "@babel/preset-env": "7.8.4",
+    "@types/cookie-parser": "1.4.2",
+    "@types/cors": "2.8.6",
+    "@types/express": "4.17.2",
+    "@types/jest": "25.1.2",
+    "@types/morgan": "1.7.37",
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "6.10.0",
+    "eslint-plugin-graphql": "3.1.1",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-lodash": "6.0.0",
+    "eslint-plugin-node": "11.0.0",
+    "eslint-plugin-prettier": "3.1.2",
+    "jest": "25.1.0",
+    "ncp": "2.0.0",
+    "nodemon": "2.0.2",
+    "npm-run-all": "4.1.5",
+    "prettier": "1.19.1",
+    "rimraf": "3.0.2"
+  },
+  "nodemonConfig": {
+    "exec": "npm run dev",
+    "watch": [
+      "./*"
+    ],
+    "env": {
+      "DEBUG": "app:*",
+      "DEBUG_COLORS": true
+    },
+    "ext": "js mjs json ini",
+    "ignore": [
+      "**/__tests__/**",
+      "*.test.js",
+      "*.spec.js",
+      "dist/*",
+      "node_modules/*",
+      ".idea/*"
+    ]
+  }
+}
