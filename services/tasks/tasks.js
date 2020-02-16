@@ -1,7 +1,6 @@
 import * as status from 'statuses';
 import { Database } from '../../lib/conn';
 
-let cursor = 0;
 export function tasksMiddleware(req, res, next) {
   console.group('Request is forward by tasks filter');
   console.log(`Request served @ ${new Date()}\n`);
@@ -20,7 +19,7 @@ export async function getAllTasks() {
   } catch (e) {
     return {
       status: status['Bad Request'],
-      response: { status: 'failed', tasks: [] }
+      response: { status: 'failure', tasks: [] }
     };
   }
 }
@@ -38,9 +37,11 @@ export async function getTask(taskId) {
       response: { status: 'success', task }
     };
   } catch (e) {
+    console.error(`Tasks :: Action -> getTask : Message -> ${e.message}`);
+    console.log(e);
     return {
       status: status['Bad Request'],
-      response: { status: 'failed', task: {} }
+      response: { status: 'failure', task: {} }
     };
   }
 }
@@ -49,13 +50,13 @@ export async function saveTask(params) {
   const sequelize = Database.getInstance().sequelize;
 
   try {
-    const { title, done } = params;
+    const { title, done, UserId } = params;
     return await sequelize.transaction(async transaction => {
       let task = await sequelize.models.Task.create(
         {
-          id: ++cursor,
           title,
-          done
+          done,
+          UserId
         },
         { transaction }
       );
@@ -66,9 +67,11 @@ export async function saveTask(params) {
       };
     });
   } catch (e) {
+    console.error(`Tasks :: Action -> saveTask : Message -> ${e.message}`);
+    console.log(e);
     return {
       status: status['Bad Request'],
-      response: { status: 'failed', task: {} }
+      response: { status: 'failure', msg: e.message }
     };
   }
 }
@@ -79,7 +82,7 @@ export async function updateTask(params) {
     const { id, title, done } = params;
     return await sequelize.transaction(async transaction => {
       let task = await sequelize.models.Task.findOrCreate(
-        { id, title, done },
+        { where: { id, title, done } },
         { transaction }
       );
 
@@ -89,9 +92,11 @@ export async function updateTask(params) {
       };
     });
   } catch (e) {
+    console.error(`Tasks :: Action -> updateTask : Message -> ${e.message}`);
+    console.log(e);
     return {
       status: status['Bad Request'],
-      response: { status: 'failed', task: params }
+      response: { status: 'failure', msg: e.message }
     };
   }
 }
@@ -99,6 +104,7 @@ export async function updateTask(params) {
 export async function deleteTask(id) {
   const sequelize = Database.getInstance().sequelize;
   try {
+    id = 1;
     return await sequelize.transaction(async transaction => {
       await sequelize.models.Task.destroy({ where: { id } }, { transaction });
 
@@ -108,9 +114,11 @@ export async function deleteTask(id) {
       };
     });
   } catch (e) {
+    console.error(`Tasks :: Action -> delete task : Message -> ${e.message}`);
+    console.log(e);
     return {
       status: status['Bad Request'],
-      response: { status: 'failed', task: { id } }
+      response: { status: 'failure', msg: e.message }
     };
   }
 }

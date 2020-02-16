@@ -16,7 +16,7 @@ export const api = {
   },
 
   getTask: async (req, res) => {
-    const { status, response } = await getTask(req.params.id);
+    const { status, response } = await getTask(req.query.id);
     res.status(status).json(response);
   },
 
@@ -31,7 +31,7 @@ export const api = {
   },
 
   deleteTask: async (req, res) => {
-    const { status, response } = await deleteTask(req);
+    const { status, response } = await deleteTask(req.body.id);
     res.status(status).json(response);
   }
 };
