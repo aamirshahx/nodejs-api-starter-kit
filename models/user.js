@@ -38,8 +38,10 @@ export class User extends Model {
   }
 
   static associate(models) {
-    this.associations['Task'] = User.hasMany(models.Task);
-    return this.association;
+    return {
+      ...this.associations,
+      Task: User.hasMany(models.Task)
+    };
   }
 }
 export default User;

@@ -27,8 +27,10 @@ export class Task extends Model {
   }
 
   static associate(models) {
-    this.associations['User'] = Task.belongsTo(models.User);
-    return this.association;
+    return {
+      ...this.associations,
+      User: Task.belongsTo(models.User)
+    };
   }
 }
 
