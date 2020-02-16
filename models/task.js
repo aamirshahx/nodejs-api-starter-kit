@@ -1,6 +1,6 @@
-import { INTEGER, Model, STRING } from 'sequelize';
+import { Model, INTEGER, STRING, BOOLEAN } from 'sequelize';
 
-export class Users extends Model {
+export class Task extends Model {
   static init(sequelize) {
     const schema = {
       id: {
@@ -8,38 +8,28 @@ export class Users extends Model {
         primaryKey: true,
         autoIncrement: true
       },
-      name: {
+      title: {
         type: STRING,
         allowNull: false,
         validate: {
           notEmpty: true
         }
       },
-      password: {
-        type: STRING,
+      done: {
+        type: BOOLEAN,
         allowNull: false,
-        validate: {
-          notEmpty: true
-        }
-      },
-      email: {
-        type: STRING,
-        unique: true,
-        allowNull: false,
-        validate: {
-          notEmpty: true
-        }
+        defaultValue: false
       }
     };
 
     const options = { sequelize };
-
     return super.init(schema, options);
   }
 
   static associate(models) {
-    this.associations['Tasks'] = Users.hasMany(models.Tasks);
+    this.associations['User'] = Task.belongsTo(models.User);
     return this.association;
   }
 }
-export default Users;
+
+export default Task;
