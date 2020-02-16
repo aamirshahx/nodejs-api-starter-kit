@@ -1,4 +1,4 @@
-import { INTEGER, Model, STRING } from 'sequelize';
+import { Model, INTEGER, STRING } from 'sequelize';
 
 export class User extends Model {
   static init(sequelize) {
